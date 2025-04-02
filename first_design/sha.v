@@ -106,7 +106,7 @@ module sha(
             digest_reg <= digest_next;
         end
     end
-    assign digest = digest_reg;
+    assign digest = digest_next;
 //================================================================
 //  FSM
 //================================================================

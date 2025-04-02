@@ -142,14 +142,14 @@ module compression(
             h_i <= 0;
         end
         else begin
-            a_i = a_next;
-            b_i = b_next;
-            c_i = c_next;
-            d_i = d_next;
-            e_i = e_next;
-            f_i = f_next;
-            g_i = g_next;
-            h_i = h_next;
+            a_i <= a_next;
+            b_i <= b_next;
+            c_i <= c_next;
+            d_i <= d_next;
+            e_i <= e_next;
+            f_i <= f_next;
+            g_i <= g_next;
+            h_i <= h_next;
         end
     end
     assign digest = {a_i, b_i, c_i, d_i, e_i, f_i, g_i, h_i};

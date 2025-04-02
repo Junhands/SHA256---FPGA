@@ -48,36 +48,24 @@
     reg [31:0] small_sigma_1;
 
 
-    wire [31:0] o1, o2, o3, o4, o5;
-    assign o1 = small_sigma_0;
-    assign o2 = small_sigma_1;
-    assign o3 = W6;
-    assign o4 = W15;
-    
-    f_adder_4o fa4o(
-        .a1(o1),
-        .a2(o2),
-        .a3(o3),
-        .a4(o4),
-        .ovfl(),
-        .carry(),
-        .sum(o5)
-    );
+    reg [31:0] W_tmp;
+    always @* begin
+        small_sigma_0 <= {W14[ 6:0], W14[31: 7]}^
+                    {W14[17:0], W14[31:18]}^
+                    {     3'b0, W14[31: 3]};
+        small_sigma_1 <= {W1[16:0], W1[31:17]}^
+                            {W1[18:0], W1[31:19]}^
+                            {   10'b0, W1[31:10]};
+        W_tmp = small_sigma_0 + small_sigma_1 + W6+ W15;
+    end
+
     always @* 
     begin
-        small_sigma_0 = 0;
-        small_sigma_1 = 0;
         if(round_idx < 16)begin
-            W_selected = M_next;
+            W_selected = M_reg;
         end
         else begin
-            small_sigma_0 <= {W14[ 6:0], W14[31: 7]}^
-                                {W14[17:0], W14[31:18]}^
-                                {     3'b0, W14[31: 3]};
-            small_sigma_1 <= {W1[16:0], W1[31:17]}^
-                                {W1[18:0], W1[31:19]}^
-                                {   10'b0, W1[31:10]};
-            W_selected = o5;
+            W_selected = W_tmp;
         end
         W0_next <= W_selected;
         W1_next <= W0;
@@ -97,6 +85,15 @@
         W15_next <= W14;
     end
 
+    reg [31:0] M_reg;
+    always @* begin
+        if(!reset_n) begin
+            M_reg <= 32'b0;
+        end
+        else begin
+            M_reg <= M_next;
+        end
+    end
     always @ (posedge clk, negedge reset_n)
     begin
         if(!reset_n) begin
