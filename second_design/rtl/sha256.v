@@ -7,20 +7,18 @@ module sha256 (
     input wire iRead_n,
     input wire [7:0] iAddress,
     input wire [31:0] iData,
-    output reg [31:0] oData,
-    output wire done
-    // Interrupt output (optional)
-    // output wire oInterrupt
+    output reg [31:0] oData
 );
 
     // Internal registers
     wire [255:0] digest;
-    wire [511:0] message;        // 16 register x 32-bit = 512 bits
+    wire [511:0] block;        // 16 register x 32-bit = 512 bits
     reg start_reg;                  // Control register bit
     reg last_block_reg;             // Control register bit
     reg done_reg;                   // Status register
+    wire done;
     reg [31:0] devided_block [0:15]; //
-    assign message =   {devided_block[15], devided_block[14], devided_block[13], devided_block[12],
+    assign block =   {devided_block[15], devided_block[14], devided_block[13], devided_block[12],
                         devided_block[11], devided_block[10], devided_block[ 9], devided_block[ 8],
                         devided_block[ 7], devided_block[ 6], devided_block[ 5], devided_block[ 4],
                         devided_block[ 3], devided_block[ 2], devided_block[ 1], devided_block[ 0]};
@@ -29,22 +27,34 @@ module sha256 (
     localparam CTRL_REG      = 8'h10;  // Control register (start, last_block)
     
     // Message input registers (16 registers, 32-bit each)
-    localparam MSG_REG_BASE  = 4'h0;  // Start address for message registers
+    localparam MSG_REG_BASE  = 8'h00;  // Start address for message registers
     
     // Digest output registers (8 registers, 32-bit each)
     localparam DIGEST_REG_BASE = 8'h80;  // Start address for digest registers
     
     // SHA-256 core instance
-    sha sha_core (
+    sha256_core IP (
         .clk(iClk),
         .reset_n(iReset_n),
         .start(start_reg),
-        .message(message),
+        .block(block),
         .last_block(last_block_reg),
         .done(done),
         .digest(digest)
     );
-    
+
+    always @ (posedge iClk, negedge iReset_n) begin
+        if(!iReset_n) begin
+            done_reg <= 1'b0; // Reset done flag    
+        end
+        else begin
+            if(done) begin
+                done_reg <= 1'b1; // Set done flag when SHA-256 operation is complete
+            end else if (!iChipSelect_n && !iRead_n) begin
+                done_reg <= 1'b0; // Clear done flag when reading from registers
+            end
+        end
+    end
 
     // Write to registers
     always @(posedge iClk or negedge iReset_n) begin
@@ -67,7 +77,6 @@ module sha256 (
             devided_block[13] <= 32'h0;
             devided_block[14] <= 32'h0;
             devided_block[15] <= 32'h0;
-
         end
         else if (!iChipSelect_n && !iWrite_n) begin
             case (iAddress)
@@ -95,6 +104,9 @@ module sha256 (
                 MSG_REG_BASE + 4'h0: devided_block[15] <= iData;
             endcase
         end
+        else begin
+            start_reg <= 1'b0; // Clear start bit if not writing to control register
+        end
     end
     
     // Read from registers
@@ -120,6 +132,5 @@ module sha256 (
             endcase
         end
     end
-    
 
 endmodule
