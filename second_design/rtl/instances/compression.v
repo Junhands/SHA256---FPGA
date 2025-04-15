@@ -101,6 +101,14 @@ module compression(
                 H5 <= H5 + f_i;
                 H6 <= H6 + g_i;
                 H7 <= H7 + h_i;
+                a_i <= H0 + a_i;
+                b_i <= H1 + b_i;
+                c_i <= H2 + c_i;
+                d_i <= H3 + d_i;
+                e_i <= H4 + e_i;
+                f_i <= H5 + f_i;
+                g_i <= H6 + g_i;
+                h_i <= H7 + h_i;
             end
             if(ready) begin // thá»±c hiá»‡n hÃ m bÄƒm SHA256 (64 duty cycle)
                 a_i <= temp1 + temp2;
