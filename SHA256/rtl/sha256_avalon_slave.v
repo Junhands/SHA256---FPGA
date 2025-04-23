@@ -1,4 +1,4 @@
-module sha256 (
+module sha256_avalon_slave (
     // Avalon MM Slave Interface
     input wire iClk,
     input wire iReset_n,
