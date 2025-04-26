@@ -24,7 +24,7 @@ module sha256_core(
         .ready(ready),
         .round_idx(round_idx)
     );
-    wmem_new unit2(
+    message_schedule unit2(
         .clk       (clk       ),
         .reset_n   (reset_n   ),
         .init (init),
