@@ -47,41 +47,43 @@
             W14 <= 32'b0;
             W15 <= 32'b0;
         end
-        if(init | digest_update) begin
-            W0 <= block[511:480];
-            W1 <= block[479:448];
-            W2 <= block[447:416];
-            W3 <= block[415:384];
-            W4 <= block[383:352];
-            W5 <= block[351:320];
-            W6 <= block[319:288];
-            W7 <= block[287:256];
-            W8 <= block[255:224];
-            W9 <= block[223:192];
-            W10 <= block[191:160];
-            W11 <= block[159:128];
-            W12 <= block[127:96];
-            W13 <= block[95:64];
-            W14 <= block[63:32];
-            W15 <= block[31:0];
-        end
-        else if(ready) begin
-            W0 <= W1;
-            W1 <= W2;
-            W2 <= W3;
-            W3 <= W4;
-            W4 <= W5;
-            W5 <= W6;
-            W6 <= W7;
-            W7 <= W8;
-            W8 <= W9;
-            W9 <= W10;
-            W10 <= W11;
-            W11 <= W12;
-            W12 <= W13;
-            W13 <= W14;
-            W14 <= W15;
-            W15 <= W_selected;
+        else begin
+            if(init | digest_update) begin
+                W0 <= block[511:480];
+                W1 <= block[479:448];
+                W2 <= block[447:416];
+                W3 <= block[415:384];
+                W4 <= block[383:352];
+                W5 <= block[351:320];
+                W6 <= block[319:288];
+                W7 <= block[287:256];
+                W8 <= block[255:224];
+                W9 <= block[223:192];
+                W10 <= block[191:160];
+                W11 <= block[159:128];
+                W12 <= block[127:96];
+                W13 <= block[95:64];
+                W14 <= block[63:32];
+                W15 <= block[31:0];
+            end
+            else if(ready) begin
+                W0 <= W1;
+                W1 <= W2;
+                W2 <= W3;
+                W3 <= W4;
+                W4 <= W5;
+                W5 <= W6;
+                W6 <= W7;
+                W7 <= W8;
+                W8 <= W9;
+                W9 <= W10;
+                W10 <= W11;
+                W11 <= W12;
+                W12 <= W13;
+                W13 <= W14;
+                W14 <= W15;
+                W15 <= W_selected;
+            end
         end
     end
  endmodule
