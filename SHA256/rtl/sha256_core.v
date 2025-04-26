@@ -30,7 +30,6 @@ module sha256_core(
         .init (init),
         .ready (ready),
         .digest_update (digest_update),
-        .round_idx (round_idx ),
         .block    (block       ),
         .W_next    (W_i       )
     );
