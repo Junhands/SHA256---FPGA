@@ -1,18 +1,16 @@
-[![build-openlane-sky130](https://github.com/secworks/sha256/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/secworks/sha256/actions/workflows/ci.yml)
-
 # sha256 #
 Hardware implementation of the SHA-256 cryptographic hash function with
-support for both SHA-256 and SHA-224.
+support for SHA-256.
 
 ## Implementation status ##
 The core has been completed for a long time and been used in several
-designs in ASICs as well as in FPGAs. The core is considered mature and
+designs in FPGAs. The core is considered mature and
 ready for use. Minor changes are non-functional cleanups of code.
 
 
 ## Introduction
 Hardware implementation of the SHA-256 cryptographic hash function with
-support for both SHA-256 and SHA-224. The implementation is written in
+support for SHA-256. The implementation is written in
 Verilog 2001 compliant code. The implementation includes the main core
 as well as wrappers that provides interfaces for simple integration.
 
@@ -24,13 +22,6 @@ written in Python.
 
 Note that the core does **NOT** implement padding of final block. The
 caller is expected to handle padding.
-
-
-### Contact information ##
-Assured provides customer support including customization, integration
-and system development related to the core. For more information,
-please contact [Assured Security
-Consultants](https://www.assured.se/contact).
 
 
 ## Implementation details ##
