@@ -2,11 +2,6 @@
 Hardware implementation of the SHA-256 cryptographic hash function with
 support for SHA-256.
 
-## Implementation status ##
-The core has been completed for a long time and been used in several
-designs in FPGAs. The core is considered mature and
-ready for use. Minor changes are non-functional cleanups of code.
-
 
 ## Introduction
 Hardware implementation of the SHA-256 cryptographic hash function with
